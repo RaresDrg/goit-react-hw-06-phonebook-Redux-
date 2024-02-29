@@ -1,7 +1,19 @@
-import { createStore } from 'redux';
-import { rootReducer } from './reducer';
+import { combineReducers, createStore } from 'redux';
 import { devToolsEnhancer } from '@redux-devtools/extension';
+
+import { persistStore } from 'redux-persist';
+
+import persistedContactsReducer from './reducers/contactsReducer';
+import filterReducer from './reducers/filterReducer';
+
+const rootReducer = combineReducers({
+  contacts: persistedContactsReducer,
+  filter: filterReducer,
+});
 
 const enhancer = devToolsEnhancer();
 
-export const store = createStore(rootReducer, enhancer);
+const store = createStore(rootReducer, enhancer);
+const persistor = persistStore(store);
+
+export { store, persistor };
